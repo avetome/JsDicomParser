@@ -1,0 +1,19 @@
+{
+  "name": "JsDicomParser",
+  "version": "0.0.1",
+  "authors": [
+    "Alexey Nikiforov <Avetome@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.*",
+    "bootstrap": "~3.3.2"
+  }
+}
