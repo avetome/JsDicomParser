@@ -3,7 +3,7 @@
 
 class LittleEndianByteArrayParser implements IByteArrayParser {
 
-    ReadFixedString(byteArray: number[], position: number, length: number):string {
+    ReadFixedString(byteArray: Uint8Array, position: number, length: number):string {
         if(length < 0)
         {
             throw 'LittleEndianByteArrayParser.ReadFixedString: length cannot be less than 0';

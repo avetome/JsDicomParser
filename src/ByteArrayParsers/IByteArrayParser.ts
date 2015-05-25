@@ -1,3 +1,3 @@
 interface IByteArrayParser {    
-    ReadFixedString(byteArray: number[], position: number, length: number): string;
+    ReadFixedString(byteArray: Uint8Array, position: number, length: number): string;
 }
