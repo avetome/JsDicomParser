@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="./../dist/jsDicomParser.js"></script>
+</head>
+<body>
+    <div>
+        <input id="FileInput" type="file" />
+    </div>    
+
+    <script type="text/javascript">
+
+    function dumpDicom(file) {
+        var arrayBuffer = file;
+        var byteArray = new Uint8Array(arrayBuffer);
+
+        var kb = byteArray.length / 1024;
+        var mb = kb / 1024;
+        var byteStr = mb > 1 ? mb.toFixed(3) + " MB" : kb.toFixed(0) + " KB";
+        console.debug('File size: ' + byteStr + ' bytes');
+
+        var dicomParser = new JsDicomParser();
+        dicomParser.parse(byteArray);        
+    }
+
+    function readFile(file) {
+        var reader = new FileReader();
+
+        reader.onload = function() {
+            dumpDicom(reader.result);
+        }
+
+        reader.readAsArrayBuffer(file);
+    }
+
+    jQuery(window).ready(function() {
+        jQuery("#FileInput").change(function(ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+
+            var files = ev.currentTarget.files;
+
+            // only first one file.
+            readFile(files[0]);
+        });
+    });
+    </script>
+</body>
+</html>
