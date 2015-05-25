@@ -44,4 +44,12 @@ class ByteStream {
 
         return result;
     }
+
+    readUint16() {
+        var result = this.byteArrayParser.readUint16(this.byteArray, this.position);
+        
+        this.position += 2;
+
+        return result;        
+    }
 }

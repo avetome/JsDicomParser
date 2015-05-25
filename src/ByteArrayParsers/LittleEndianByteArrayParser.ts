@@ -29,4 +29,15 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
 
         return result;
     }
+
+    readUint16(byteArray: Uint8Array, position: number):number {
+        if (position < 0) {
+            throw 'LittleEndianByteArrayParser.readUint16: position cannot be less than 0';
+        }
+        if (position + 2 > byteArray.length) {
+            throw 'LittleEndianByteArrayParser.readUint16: length cannot be more than buffer.length';
+        }
+        
+        return byteArray[position] + (byteArray[position + 1] * 256);        
+    }
 }

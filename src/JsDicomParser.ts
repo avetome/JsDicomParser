@@ -2,6 +2,7 @@
 /// <reference path="./ByteStream.ts" />
 /// <reference path="./ByteArrayParsers/IByteArrayParser.ts" />
 /// <reference path="./ByteArrayParsers/LittleEndianByteArrayParser.ts" />
+/// <reference path="./DicomReaders/ExplicitDicomReader.ts" />
 
 class JsDicomParser {
 
@@ -15,6 +16,10 @@ class JsDicomParser {
     // Spoiler: always in Explicit VR Little Endian
     private _readPart10Header(stream: ByteStream) {
         this._checkDicomPrefix(stream);
+
+        var dicomReader = new ExplicitDicomReader();
+        
+        console.debug("", dicomReader.readTag(stream));
     }
 
     private _checkDicomPrefix(stream: ByteStream) {
