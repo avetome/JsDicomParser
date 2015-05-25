@@ -51,4 +51,3 @@ class ByteStream {
     }
 }
 
-export = ByteStream;

@@ -30,5 +30,3 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
         return result;
     }
 }
-
-export = LittleEndianByteArrayParser;
