@@ -13,12 +13,13 @@ gulp.task('ts:build', function () {
     var tsResult = gulp.src(config.src.ts)
                        .pipe(sourcemaps.init())
                        .pipe(tsc({
-                           target: 'ES5',
+                           target: 'ES5',                           
+                           out: config.build.jsfile,
                            declarationFiles: false,
                            noExternalResolve: true
                        }));
 
-        return tsResult.js.pipe(concat(config.build.jsfile))
+        return tsResult.js
                         .pipe(sourcemaps.write('.'))
                         .pipe(gulp.dest(config.build.js));
 });
