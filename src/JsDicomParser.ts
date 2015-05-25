@@ -18,8 +18,8 @@ class JsDicomParser {
         this._checkDicomPrefix(stream);
 
         var dicomReader = new ExplicitDicomReader();
-        
-        console.debug("", dicomReader.readTag(stream));
+
+        console.debug("", dicomReader.readElement(stream));
     }
 
     private _checkDicomPrefix(stream: ByteStream) {

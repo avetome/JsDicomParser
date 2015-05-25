@@ -52,4 +52,12 @@ class ByteStream {
 
         return result;        
     }
+
+    readUint32() {
+        var result = this.byteArrayParser.readUint32(this.byteArray, this.position);
+        
+        this.position += 4;
+
+        return result;        
+    }    
 }

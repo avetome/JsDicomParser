@@ -37,7 +37,24 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
         if (position + 2 > byteArray.length) {
             throw 'LittleEndianByteArrayParser.readUint16: length cannot be more than buffer.length';
         }
-        
+
         return byteArray[position] + (byteArray[position + 1] * 256);        
     }
+
+    readUint32(byteArray: Uint8Array, position: number):number {
+        if (position < 0) {
+            throw 'LittleEndianByteArrayParser.readUint16: position cannot be less than 0';
+        }
+
+        if (position + 4 > byteArray.length) {
+            throw 'LittleEndianByteArrayParser.readUint16: length cannot be more than buffer.length';
+        }
+
+        var uint32 = (byteArray[position] +
+        (byteArray[position + 1] * 256) +
+        (byteArray[position + 2] * 256 * 256) +
+        (byteArray[position + 3] * 256 * 256 * 256 ));
+
+        return uint32;
+    }    
 }
