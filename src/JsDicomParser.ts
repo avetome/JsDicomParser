@@ -6,6 +6,7 @@
 /// <reference path="./DicomElement.ts" />
 /// <reference path="./DicomDataSet.ts" />
 
+
 class JsDicomParser {
 
     parse(byteArray: Uint8Array, option?: any[]) {
@@ -40,7 +41,12 @@ class JsDicomParser {
         var dataSet = new DicomDataSet(stream.byteArray, stream.byteArrayParser, elements);
 
         for (var i = 0; i < elements.length; i++) {
-            console.debug("", elements[i], dataSet.getElementAsString(elements[i].tag));
+            if (elements[i].vr == "UL") {
+                console.debug("", elements[i], dataSet.getElementAsUint32(elements[i].tag));
+            }
+            else {
+                console.debug("", elements[i], dataSet.getElementAsString(elements[i].tag));
+            }
         }
     }
 

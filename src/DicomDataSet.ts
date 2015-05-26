@@ -21,6 +21,17 @@ class DicomDataSet {
 
         var fixedString = this.byteArrayParser.ReadFixedString(this.byteArray, element.offset, element.length);
 
-        return fixedString.trim();               
+        return fixedString.trim();
+    }
+
+    getElementAsUint32(tag: string) {
+        var element: DicomElement = this.elements[tag];        
+
+        if(!element || element.length === 0)
+        {
+            return undefined;
+        }
+
+        return this.byteArrayParser.readUint32(this.byteArray, element.offset);        
     }
 }
