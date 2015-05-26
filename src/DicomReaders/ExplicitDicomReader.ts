@@ -61,6 +61,8 @@ class ExplicitDicomReader implements IDicomReader {
             // read the sequence
         }
         
+        stream.seek(element.length);
+        
         return element;
     }
 
