@@ -1,20 +1,21 @@
 /// <reference path="./../typing/browserify.d.ts" />
 /// <reference path="./IDicomReader.ts" />
 /// <reference path="./../DicomElement.ts" />
+/// <reference path="./../DicomTag.ts" />
+/// <reference path="./../utils/DicomConstants.ts" />
 
 class ExplicitDicomReader implements IDicomReader {
 
-    readTag(stream: ByteStream):string {
+    readTag(stream: ByteStream):DicomTag {
 
         if(stream === undefined)
         {
             throw "ExplicitDicomReader.readTag: stream can't be undefined";
         }
 
-        var groupNumber =  stream.readUint16() * 256 * 256;
-        var elementNumber = stream.readUint16();
-
-        var tag = "x" + ('00000000' + (groupNumber + elementNumber).toString(16)).substr(-8);
+        var tag = new DicomTag();
+        tag.group = stream.readUint16();
+        tag.element = stream.readUint16();
 
         return tag;
     }
@@ -26,7 +27,12 @@ class ExplicitDicomReader implements IDicomReader {
         }
 
         var element = new DicomElement();
-        element.tag = this.readTag(stream);
+        
+        var tag: DicomTag = this.readTag(stream);
+        element.tag = tag.getCode();
+        element.tagName = tag.findName();
+        element.tagSearchCode = tag.getDicomLookupSearchCode();
+
         element.vr = stream.readFixedString(2);
 
         var dataLengthSizeBytes = this._getDataLengthSizeInBytesForVR(element.vr);
@@ -46,11 +52,13 @@ class ExplicitDicomReader implements IDicomReader {
         {
             element.isUndefinedLength = true;
 
-            if(element.tag === 'x7fe00010') {
+            if(element.tag === DicomConstants.Tags.PixelData) {
+
                 // find image pixels size
                 
                 return element;
             } else {
+
                 // find item delimitation 
 
                 return element;

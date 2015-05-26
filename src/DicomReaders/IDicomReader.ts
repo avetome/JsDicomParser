@@ -3,6 +3,6 @@
 /// <reference path="./../DicomElement.ts" />
 
 interface IDicomReader {
-    readTag(byteStream: ByteStream): string;
+    readTag(byteStream: ByteStream): DicomTag;
     readElement(byteStream: ByteStream): DicomElement;
 }
