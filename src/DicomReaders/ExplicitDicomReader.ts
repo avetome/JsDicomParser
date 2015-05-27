@@ -2,25 +2,13 @@
 /// <reference path="./IDicomReader.ts" />
 /// <reference path="./../DicomElement.ts" />
 /// <reference path="./../DicomTag.ts" />
+/// <reference path="./../TagReader.ts" />
 /// <reference path="./../utils/DicomConstants.ts" />
 
-class ExplicitDicomReader implements IDicomReader {
-
-    readTag(stream: ByteStream):DicomTag {
-
-        if(stream === undefined)
-        {
-            throw "ExplicitDicomReader.readTag: stream can't be undefined";
-        }
-
-        var tag = new DicomTag();
-        tag.group = stream.readUint16();
-        tag.element = stream.readUint16();
-
-        return tag;
-    }
-
-    readElement(stream: ByteStream): DicomElement {
+class ExplicitDicomReader implements IDicomReader 
+{
+    readElement(stream: ByteStream): DicomElement 
+    {
         if(stream === undefined)
         {
             throw "ExplicitDicomReader.readTag: stream can't be undefined";
@@ -28,7 +16,7 @@ class ExplicitDicomReader implements IDicomReader {
 
         var element = new DicomElement();
         
-        var tag: DicomTag = this.readTag(stream);
+        var tag: DicomTag = TagReader.ReadTag(stream);
         element.tag = tag.getCode();
         element.tagName = tag.findName();
         element.tagSearchCode = tag.getDicomLookupSearchCode();
@@ -52,15 +40,17 @@ class ExplicitDicomReader implements IDicomReader {
         {
             element.isUndefinedLength = true;
 
-            if(element.tag === DicomConstants.Tags.PixelData) {
+            if(element.tag === DicomConstants.Tags.PixelData) 
+            {
 
                 console.debug("pixels size ", stream.position);
 
                 // find image pixels size
                 
                 return element;
-            } else {
-
+            } 
+            else 
+            {
                 console.debug("find item delimitation ", stream.position, element);
 
                 // find item delimitation 
@@ -79,7 +69,7 @@ class ExplicitDicomReader implements IDicomReader {
         return element;
     }
 
-    _getDataLengthSizeInBytesForVR(vr)
+    private _getDataLengthSizeInBytesForVR(vr) 
     {
         if( vr === 'OB' ||
             vr === 'OW' ||
