@@ -11,5 +11,8 @@ class DicomElement {
     isUndefinedLength: boolean;
     offset: number;
 
+    items: DicomElement[];
+    DataSet: any;
+
     constructor() {}
 }

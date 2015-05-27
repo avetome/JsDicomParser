@@ -8,7 +8,10 @@ class DicomConstants {
         Columns: "x00280011",
         BitsAllocated: "x00280100",
         BitsStored: "x00280101",
-        NumberOfFrames: "x00280008"
+        NumberOfFrames: "x00280008",
+        StartOfItem: "xfffee000",
+        EndOfItems: "xfffee00d",
+        EndOfSequence: "xfffee0dd",
     }
 
     public static TransferSyntaxes: any = {

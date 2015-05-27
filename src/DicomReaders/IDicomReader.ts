@@ -2,7 +2,6 @@
 /// <reference path="./../ByteStream.ts" />
 /// <reference path="./../DicomElement.ts" />
 
-interface IDicomReader {
-    readTag(byteStream: ByteStream): DicomTag;
+interface IDicomReader {    
     readElement(byteStream: ByteStream): DicomElement;
 }

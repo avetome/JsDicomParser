@@ -3,7 +3,8 @@
 /// <reference path="./../DicomElement.ts" />
 /// <reference path="./../DicomTag.ts" />
 /// <reference path="./../TagReader.ts" />
-/// <reference path="./../utils/DicomConstants.ts" />
+/// <reference path="./../TagReader.ts" />
+/// <reference path="./../SequenceReaders/ExplicitSequenceReader.ts" />
 
 class ExplicitDicomReader implements IDicomReader 
 {
@@ -36,6 +37,17 @@ class ExplicitDicomReader implements IDicomReader
             element.offset = stream.position;
         }
 
+        if(element.vr === 'SQ') { // read the sequence
+            
+            console.debug("sequence ", stream.position);
+
+            var sequenceReader = new ExplicitSequenceReader();
+
+            sequenceReader.ReadSequence(stream, element);
+
+            return element;
+        }        
+
         if(element.length === 4294967295) // xFFFFFFFF
         {
             element.isUndefinedLength = true;
@@ -43,7 +55,7 @@ class ExplicitDicomReader implements IDicomReader
             if(element.tag === DicomConstants.Tags.PixelData) 
             {
 
-                console.debug("pixels size ", stream.position);
+                console.warn("pixels size ", stream.position);
 
                 // find image pixels size
                 
@@ -51,17 +63,12 @@ class ExplicitDicomReader implements IDicomReader
             } 
             else 
             {
-                console.debug("find item delimitation ", stream.position, element);
+                console.warn("find item delimitation ", stream.position, element);
 
                 // find item delimitation 
 
                 return element;
             }            
-        }
-
-        if(element.vr === 'SQ') {
-            // read the sequence
-            console.debug("sequence ", stream.position);
         }
         
         stream.seek(element.length);
