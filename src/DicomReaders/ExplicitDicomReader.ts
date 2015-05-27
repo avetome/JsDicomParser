@@ -48,16 +48,20 @@ class ExplicitDicomReader implements IDicomReader {
             element.offset = stream.position;
         }
 
-        if(element.length === 4294967295)
+        if(element.length === 4294967295) // xFFFFFFFF
         {
             element.isUndefinedLength = true;
 
             if(element.tag === DicomConstants.Tags.PixelData) {
 
+                console.debug("pixels size ", stream.position);
+
                 // find image pixels size
                 
                 return element;
             } else {
+
+                console.debug("find item delimitation ", stream.position, element);
 
                 // find item delimitation 
 
@@ -67,6 +71,7 @@ class ExplicitDicomReader implements IDicomReader {
 
         if(element.vr === 'SQ') {
             // read the sequence
+            console.debug("sequence ", stream.position);
         }
         
         stream.seek(element.length);

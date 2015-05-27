@@ -6,23 +6,52 @@
 /// <reference path="./DicomElement.ts" />
 /// <reference path="./DicomDataSet.ts" />
 
-
 class JsDicomParser {
 
     parse(byteArray: Uint8Array, option?: any[]) {
         var littleEndianStream = new ByteStream(byteArray, new LittleEndianByteArrayParser());
 
-        this._readPart10Header(littleEndianStream);
+        var dataSet:DicomDataSet = new DicomDataSet(littleEndianStream.byteArray, littleEndianStream.byteArrayParser, []);
+
+        this._checkDicomPrefix(littleEndianStream);
+
+        this._readPart10Header(littleEndianStream, dataSet);
+
+        var transferSyntax = this._readTransferSyntax(dataSet);
+
+        if (!this.isExplicit(transferSyntax) || !this.isLittleEndian(transferSyntax)) {
+            throw "JsDicomParser.parse: only ExplicitVrLittleEndian transfer syntax support yet";
+        }
+
+        this._readDataSet(littleEndianStream, dataSet);
+
+        console.debug("", dataSet.elements);
+
+        console.debug("PhotometricInterpretation: ", dataSet.getElementAsString(DicomConstants.Tags.PhotometricInterpretation));
+        console.debug("Rows: ", dataSet.getElementAsUint16(DicomConstants.Tags.Rows));
+        console.debug("Columns: ", dataSet.getElementAsUint16(DicomConstants.Tags.Columns));
+        console.debug("BitsAllocated: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsAllocated));
+        console.debug("BitsStored: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsStored));
+        console.debug("NumberOfFrames: ", dataSet.getElementAsUint16(DicomConstants.Tags.NumberOfFrames));
+        console.debug("PixelDataLength: ", dataSet.elements[DicomConstants.Tags.PixelData]);
+        console.debug("", this._extractUncompressedPixels(dataSet, dataSet.getElementAsUint16(DicomConstants.Tags.Rows), dataSet.getElementAsUint16(DicomConstants.Tags.Columns)));
+    }
+
+    private _extractUncompressedPixels(dataSet: DicomDataSet, width: any, height:any)
+    {
+        var pixelDataElement: DicomElement = dataSet.elements[DicomConstants.Tags.PixelData];
+        var pixelDataOffset = pixelDataElement.offset;
+
+        var numPixels = width * height;
+
+        return new Int16Array(dataSet.byteArray.buffer, pixelDataOffset, numPixels);
     }    
 
     // read dicom header according to PS3.10 (http://medical.nema.org/dicom/2013/output/chtml/part10/PS3.10.html)
     // Spoiler: always in Explicit VR Little Endian
-    private _readPart10Header(stream: ByteStream) {
-        this._checkDicomPrefix(stream);
+    private _readPart10Header(stream: ByteStream, dataSet:DicomDataSet) {       
 
-        var dicomReader = new ExplicitDicomReader();
-
-        var elements: DicomElement[] = [];
+        var dicomReader = new ExplicitDicomReader();        
 
         while(stream.position < stream.byteArray.length) {
             var position: number = stream.position;
@@ -34,19 +63,26 @@ class JsDicomParser {
                 break;
             }
 
-            elements[element.tag] = element;
-            elements.push(element);
+            dataSet.addElement(element);
         }
+    }
 
-        var dataSet = new DicomDataSet(stream.byteArray, stream.byteArrayParser, elements);
+    // only ExplicitVrLittleEndian support now
+    private _readDataSet(stream: ByteStream, dataSet:DicomDataSet) {
+        var dicomReader = new ExplicitDicomReader();        
 
-        for (var i = 0; i < elements.length; i++) {
-            if (elements[i].vr == "UL") {
-                console.debug("", elements[i], dataSet.getElementAsUint32(elements[i].tag));
+        try {
+            while (stream.position < stream.byteArray.length) {
+                var position: number = stream.position;
+
+                var element: DicomElement = dicomReader.readElement(stream);
+
+                dataSet.addElement(element);
             }
-            else {
-                console.debug("", elements[i], dataSet.getElementAsString(elements[i].tag));
-            }
+        }
+        catch(e) {
+            console.debug("",stream.position);
+            throw e;
         }
     }
 
@@ -54,10 +90,38 @@ class JsDicomParser {
         stream.seek(128);
         var prefix = stream.readFixedString(4);
 
-        console.debug(prefix);
-
         if (prefix !== "DICM") {
             throw "JsDicomParser._checkDicomPrefix: DICM prefix not found";
         }
+    }
+
+    private _readTransferSyntax(headerDataSet: DicomDataSet) {
+        if(headerDataSet.elements[DicomConstants.Tags.TransferSyntaxUID] === undefined) {
+            throw 'JsDicomParser._readTransferSyntax: missing required meta header attribute 0002,0010';
+        }
+
+        var transferSyntaxElement: DicomElement = headerDataSet.elements[DicomConstants.Tags.TransferSyntaxUID];
+
+        return headerDataSet.getElementAsString(transferSyntaxElement.tag);
+    }
+
+    private isExplicit(transferSyntax) {
+        if(transferSyntax === DicomConstants.TransferSyntaxes.ImplicitVrLittleEndian)
+        {
+            return false;
+        }
+
+        // all other transfer syntaxes should be explicit
+        return true;
+    }
+
+    private isLittleEndian(transferSyntax) {
+        if(transferSyntax === DicomConstants.TransferSyntaxes.ExplicitVrBigEndian)
+        {
+            return false;
+        }
+
+        // all other transfer syntaxes are little endian; only the pixel encoding differs
+        return true;
     }
 }
