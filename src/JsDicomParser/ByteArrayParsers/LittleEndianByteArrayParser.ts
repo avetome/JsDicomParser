@@ -54,5 +54,25 @@ module JsDicomParser {
 
             return uint32;
         }
+
+        readFloat(byteArray: Uint8Array, position: number) {
+            if (position < 0) {
+                throw 'LittleEndianByteArrayParser.readFloat: position cannot be less than 0';
+            }
+
+            if (position + 4 > byteArray.length) {
+                throw 'LittleEndianByteArrayParser.readFloat: length cannot be more than buffer.length';
+            }
+
+            var fa = new Uint8Array(4);
+            fa[0] = byteArray[position];
+            fa[1] = byteArray[position + 1];
+            fa[2] = byteArray[position + 2];
+            fa[3] = byteArray[position + 3];
+
+            var floatArray = new Float32Array(fa.buffer);
+
+            return floatArray[0];
+        }
     }
 }

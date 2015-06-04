@@ -55,5 +55,15 @@ module JsDicomParser {
 
             return this.byteArrayParser.readUint32(this.byteArray, element.offset);
         }
+
+        getElementAsFloat(tag: string) {
+            var element: DicomElement = this.elements[tag];
+
+            if (!element || element.length === 0) {
+                return undefined;
+            }
+
+            return this.byteArrayParser.readFloat(this.byteArray, element.offset);
+        }        
     }
 }
