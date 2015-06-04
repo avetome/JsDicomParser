@@ -35,6 +35,8 @@ module JsDicomParser {
             console.debug("NumberOfFrames: ", dataSet.getElementAsUint16(DicomConstants.Tags.NumberOfFrames));
             console.debug("DerivationDescription: ", dataSet.getElementAsString(DicomConstants.Tags.DerivationDescription));
             console.debug("PixelDataLength: ", dataSet.elements[DicomConstants.Tags.PixelData]);
+
+            return dataSet;
         }
 
         // read dicom header according to PS3.10 (http://medical.nema.org/dicom/2013/output/chtml/part10/PS3.10.html)
