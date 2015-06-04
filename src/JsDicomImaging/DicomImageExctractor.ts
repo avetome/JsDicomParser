@@ -16,6 +16,7 @@ module JsDicomImaging
             }
 
             var image = new GrayscaleDicomImage();
+            image.uid = dicomDataSet.getElementAsString('x00080018');
             image.photometricInterpretation = photometricInterpretation;
             image.rows = image.height = dicomDataSet.getElementAsUint16('x00280010');
             image.columns = image.width = dicomDataSet.getElementAsUint16('x00280011');
@@ -24,6 +25,11 @@ module JsDicomImaging
             image.pixelSpacing = dicomDataSet.getElementAsfloatString("x00280030");
             image.windowCenter = dicomDataSet.getElementAsfloatString('x00281050');
             image.windowWidth = dicomDataSet.getElementAsfloatString('x00281051');
+
+            var mmv = this._getMinAndMaxPixelValue(image.pixelData);
+
+            image.minPixelValue = mmv.minValue;
+            image.maxPixelValue = mmv.maxValue;
 
             return image;
         }
@@ -85,6 +91,25 @@ module JsDicomImaging
             {
                 return false;
             }
+        }
+
+        private _getMinAndMaxPixelValue(pixelData: Uint16Array) {
+            var minValue = 66666;
+            var maxValue = -32768;
+
+            for (var i = 0; i < pixelData.length; i++) {
+                if (pixelData[i] > maxValue) {
+                    maxValue = pixelData[i];
+                }
+                if (pixelData[i] < minValue) {
+                    minValue = pixelData[i];
+                }
+            }
+
+            return {
+                minValue: minValue,
+                maxValue: maxValue
+            };
         }
     }
 }

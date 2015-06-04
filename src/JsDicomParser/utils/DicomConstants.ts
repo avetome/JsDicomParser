@@ -14,7 +14,8 @@ module JsDicomParser {
             StartOfItem: "xfffee000",
             EndOfItems: "xfffee00d",
             EndOfSequence: "xfffee0dd",
-            DerivationDescription: "x00082111"
+            DerivationDescription: "x00082111",
+            SOPInstanceUID: "x00080018"
         }
 
         public static TransferSyntaxes: any = {
