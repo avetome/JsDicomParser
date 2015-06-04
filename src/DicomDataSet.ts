@@ -1,59 +1,59 @@
 /// <reference path="./ByteArrayParsers/IByteArrayParser.ts" />
 /// <reference path="./DicomElement.ts" />
 
-class DicomDataSet {
-    byteArray: Uint8Array;
-    byteArrayParser: IByteArrayParser;
-    elements: DicomElement[];
+module JsDicomParser {
+    export class DicomDataSet {
+        byteArray: Uint8Array;
+        byteArrayParser: IByteArrayParser;
+        elements: DicomElement[];
 
-    constructor(byteArray: Uint8Array, byteArrayParser: IByteArrayParser, elements: DicomElement[]) {
-        this.byteArray = byteArray;
-        this.byteArrayParser = byteArrayParser;
-        this.elements = elements;
-    }
-
-    addElement(element: DicomElement) {
-        if (!element || element.length < 0) {
-            throw "DicomDataSet.addElement: can't add empty element";
+        constructor(byteArray: Uint8Array, byteArrayParser: IByteArrayParser, elements: DicomElement[]) {
+            this.byteArray = byteArray;
+            this.byteArrayParser = byteArrayParser;
+            this.elements = elements;
         }
 
-        if (this.elements[element.tag] == undefined) {
-            this.elements[element.tag] = element;
-            this.elements.push(element);            
-        }
-    }
+        addElement(element: DicomElement) {
+            if (!element || element.length < 0) {
+                throw "DicomDataSet.addElement: can't add empty element";
+            }
 
-    getElementAsString(tag: string) {
-        var element: DicomElement = this.elements[tag];
-
-        if (!element || element.length <= 0) {
-            return undefined;
+            if (this.elements[element.tag] == undefined) {
+                this.elements[element.tag] = element;
+                this.elements.push(element);
+            }
         }
 
-        var fixedString = this.byteArrayParser.ReadFixedString(this.byteArray, element.offset, element.length);
+        getElementAsString(tag: string) {
+            var element: DicomElement = this.elements[tag];
 
-        return fixedString.trim();
-    }
+            if (!element || element.length <= 0) {
+                return undefined;
+            }
 
-    getElementAsUint16(tag: string) {
-        var element: DicomElement = this.elements[tag];        
+            var fixedString = this.byteArrayParser.ReadFixedString(this.byteArray, element.offset, element.length);
 
-        if(!element || element.length === 0)
-        {
-            return undefined;
+            return fixedString.trim();
         }
 
-        return this.byteArrayParser.readUint16(this.byteArray, element.offset);        
-    }    
+        getElementAsUint16(tag: string) {
+            var element: DicomElement = this.elements[tag];
 
-    getElementAsUint32(tag: string) {
-        var element: DicomElement = this.elements[tag];        
+            if (!element || element.length === 0) {
+                return undefined;
+            }
 
-        if(!element || element.length === 0)
-        {
-            return undefined;
+            return this.byteArrayParser.readUint16(this.byteArray, element.offset);
         }
 
-        return this.byteArrayParser.readUint32(this.byteArray, element.offset);        
+        getElementAsUint32(tag: string) {
+            var element: DicomElement = this.elements[tag];
+
+            if (!element || element.length === 0) {
+                return undefined;
+            }
+
+            return this.byteArrayParser.readUint32(this.byteArray, element.offset);
+        }
     }
 }

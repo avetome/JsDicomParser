@@ -2,6 +2,8 @@
 /// <reference path="./../ByteStream.ts" />
 /// <reference path="./../DicomElement.ts" />
 
-interface IDicomReader {    
-    readElement(byteStream: ByteStream): DicomElement;
+module JsDicomParser {
+    export interface IDicomReader {
+        readElement(byteStream: ByteStream): DicomElement;
+    }
 }
