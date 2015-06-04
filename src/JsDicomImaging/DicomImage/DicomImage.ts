@@ -9,5 +9,7 @@ module JsDicomImaging {
         pixelsCount: number;
         sizeInBytes: number;
         pixelSpacing: number;
+        windowCenter: number;
+        windowWidth: number;
     }
 }

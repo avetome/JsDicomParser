@@ -19,9 +19,11 @@ module JsDicomImaging
             image.photometricInterpretation = photometricInterpretation;
             image.rows = image.height = dicomDataSet.getElementAsUint16('x00280010');
             image.columns = image.width = dicomDataSet.getElementAsUint16('x00280011');
-            image.pixelsCount = image.rows * image.columns;
-            image.pixelSpacing = this._getPixelSpacing(dicomDataSet);
+            image.pixelsCount = image.rows * image.columns;            
             image.pixelData = this._extractStoredPixels(dicomDataSet, image.width, image.height);
+            image.pixelSpacing = dicomDataSet.getElementAsfloatString("x00280030");
+            image.windowCenter = dicomDataSet.getElementAsfloatString('x00281050');
+            image.windowWidth = dicomDataSet.getElementAsfloatString('x00281051');
 
             return image;
         }
@@ -57,23 +59,14 @@ module JsDicomImaging
             {
                 return 1; // unsigned 8 bit
             } 
-            else if(pixelRepresentation === 0 && bitsAllocated === 16) 
+            else if(pixelRepresentation === 0 && bitsAllocated === 16)
             {
                 return 2; // unsigned 16 bit
             }
-            else if(pixelRepresentation === 1 && bitsAllocated === 16) 
+            else if(pixelRepresentation === 1 && bitsAllocated === 16)
             {
                 return 3; // signed 16 bit data
             }
-        }
-
-        private _getPixelSpacing(dataSet: any):number {
-            var pss = dataSet.getElementAsString('x00280030');
-            if (!pss || !pss.length) {
-                return 0;
-            }
-
-            return parseFloat(pss) || 0;
         }
 
         private  _isColorImage(photoMetricInterpretation)
