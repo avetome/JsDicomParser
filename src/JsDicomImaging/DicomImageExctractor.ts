@@ -19,9 +19,11 @@ module JsDicomImaging
             image.uid = dicomDataSet.getElementAsString('x00080018');
             image.modality = dicomDataSet.getElementAsString('x00080060');
             image.photometricInterpretation = photometricInterpretation;
+            image.bitsAllocated = dicomDataSet.getElementAsUint16('x00280100');
             image.rows = image.height = dicomDataSet.getElementAsUint16('x00280010');
             image.columns = image.width = dicomDataSet.getElementAsUint16('x00280011');
-            image.pixelsCount = image.rows * image.columns;            
+            image.pixelsCount = image.rows * image.columns;
+            image.sizeInBytes = image.rows * image.columns * image.bitsAllocated / 8;
             image.pixelData = this._extractStoredPixels(dicomDataSet, image.width, image.height);
             image.pixelSpacing = dicomDataSet.getElementAsfloatString("x00280030");
             image.windowCenter = dicomDataSet.getElementAsfloatString('x00281050');

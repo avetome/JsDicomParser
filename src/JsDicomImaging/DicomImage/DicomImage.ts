@@ -5,6 +5,7 @@ module JsDicomImaging {
         
         photometricInterpretation: string; // TODO: create photometricInterpretation enum
         pixelSpacing: number;
+        bitsAllocated: number;
 
         rows: number;
         columns: number;
