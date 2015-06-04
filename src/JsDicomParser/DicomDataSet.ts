@@ -64,6 +64,22 @@ module JsDicomParser {
             }
 
             return this.byteArrayParser.readFloat(this.byteArray, element.offset);
-        }        
+        }
+
+        getElementAsfloatString(tag: string)
+        {
+            var element = this.elements[tag];
+
+            if(element && element.length > 0)
+            {
+                var value = this.getElementAsString(tag);
+
+                if(value !== undefined) {
+                    return parseFloat(value);
+                }
+            }
+
+            return undefined;
+        }
     }
 }
