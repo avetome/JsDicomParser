@@ -9,12 +9,12 @@ var del = require('del');
 var concat = require('gulp-concat');
 var config = require('./gulpfile.config');
 
-gulp.task('ts:build', function () {
-    var tsResult = gulp.src(config.src.ts)
+gulp.task('dicomParserTs:build', function () {
+    var tsResult = gulp.src(config.src.dicomParserTs)
                        .pipe(sourcemaps.init())
                        .pipe(tsc({
                            target: 'ES5',                           
-                           out: config.build.jsfile,
+                           out: config.build.dicomParserJsFile,
                            declarationFiles: false,
                            noExternalResolve: true
                        }));
@@ -23,6 +23,10 @@ gulp.task('ts:build', function () {
                         .pipe(sourcemaps.write('.'))
                         .pipe(gulp.dest(config.build.js));
 });
+
+gulp.task('ts:build', [
+    'dicomParserTs:build'
+]);
 
 gulp.task('watch', function(){
     watchplugin([config.watch.ts], function(){
