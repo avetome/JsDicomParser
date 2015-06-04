@@ -9,6 +9,7 @@
 
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="./../dist/jsDicomParser.js"></script>
+    <script src="./../dist/jsDicomImaging.js"></script>
 </head>
 <body>
     <div>
@@ -29,7 +30,12 @@
         console.debug('File size: ' + byteStr + ' bytes');
 
         var dicomParser = new JsDicomParser.Parser();
-        dicomParser.parse(byteArray);        
+        var dicomDataSet = dicomParser.parse(byteArray);
+
+        var dicomImageExtractor = new DicomImaging.DicomImageExtractor();
+
+        var dicomImage = dicomImageExtractor.getDicomImage(dicomDataSet);
+        console.debug(dicomImage);
     }
 
     function readFile(file) {
