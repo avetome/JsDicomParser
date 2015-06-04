@@ -2,10 +2,12 @@ var config = {
     build: {
         js: 'dist/',
         dicomParserJsFile: "jsDicomParser.js",
+        dicomImagingJsFile: "jsDicomImaging.js",
     },
     
     src: {
         dicomParserTs: './src/JsDicomParser/**/*.ts',
+        dicomImagingTs: './src/JsDicomImaging/**/*.ts',
     },
     
     watch: {
