@@ -26,14 +26,15 @@ class JsDicomParser {
         this._readDataSet(littleEndianStream, dataSet);
 
         console.debug("", dataSet.elements);
-
+        console.debug("TransferSyntaxes: ", dataSet.getElementAsString(DicomConstants.Tags.TransferSyntaxUID));
         console.debug("PhotometricInterpretation: ", dataSet.getElementAsString(DicomConstants.Tags.PhotometricInterpretation));
         console.debug("Rows: ", dataSet.getElementAsUint16(DicomConstants.Tags.Rows));
         console.debug("Columns: ", dataSet.getElementAsUint16(DicomConstants.Tags.Columns));
         console.debug("BitsAllocated: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsAllocated));
         console.debug("BitsStored: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsStored));
         console.debug("NumberOfFrames: ", dataSet.getElementAsUint16(DicomConstants.Tags.NumberOfFrames));
-        console.debug("PixelDataLength: ", dataSet.elements[DicomConstants.Tags.PixelData]);
+        console.debug("DerivationDescription: ", dataSet.getElementAsString(DicomConstants.Tags.DerivationDescription));
+        console.debug("PixelDataLength: ", dataSet.elements[DicomConstants.Tags.PixelData]);        
         console.debug("", this._extractUncompressedPixels(dataSet, dataSet.getElementAsUint16(DicomConstants.Tags.Rows), dataSet.getElementAsUint16(DicomConstants.Tags.Columns)));
     }
 

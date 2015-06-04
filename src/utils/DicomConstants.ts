@@ -12,6 +12,7 @@ class DicomConstants {
         StartOfItem: "xfffee000",
         EndOfItems: "xfffee00d",
         EndOfSequence: "xfffee0dd",
+        DerivationDescription: "x00082111"
     }
 
     public static TransferSyntaxes: any = {

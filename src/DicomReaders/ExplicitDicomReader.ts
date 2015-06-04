@@ -3,8 +3,8 @@
 /// <reference path="./../DicomElement.ts" />
 /// <reference path="./../DicomTag.ts" />
 /// <reference path="./../TagReader.ts" />
-/// <reference path="./../TagReader.ts" />
 /// <reference path="./../SequenceReaders/ExplicitSequenceReader.ts" />
+/// <reference path="./../EncapsulatedElementReaders/EncapsulatedElementReader.ts" />
 
 class ExplicitDicomReader implements IDicomReader 
 {
@@ -37,42 +37,39 @@ class ExplicitDicomReader implements IDicomReader
             element.offset = stream.position;
         }
 
+        if (element.length !== 4294967295) // xFFFFFFFF
+        {            
+            stream.seek(element.length);
+        
+            return element;            
+        }
+
+        element.isUndefinedLength = true;                
+
         if(element.vr === 'SQ') { // read the sequence
             
             console.debug("sequence ", stream.position);
 
             var sequenceReader = new ExplicitSequenceReader();
-
             sequenceReader.ReadSequence(stream, element);
 
             return element;
         }        
 
-        if(element.length === 4294967295) // xFFFFFFFF
+        if(element.tag === DicomConstants.Tags.PixelData) 
         {
-            element.isUndefinedLength = true;
+            console.warn("pixels size ", stream.position);
+            
+            EncapsulatedElementReader.readElement(stream, element);
 
-            if(element.tag === DicomConstants.Tags.PixelData) 
-            {
-
-                console.warn("pixels size ", stream.position);
-
-                // find image pixels size
-                
-                return element;
-            } 
-            else 
-            {
-                console.warn("find item delimitation ", stream.position, element);
-
-                // find item delimitation 
-
-                return element;
-            }            
+            console.debug("element.fragments: ", element.fragments);
+        } 
+        else 
+        {
+            console.warn("find item delimitation ", stream.position, element);
+            // find item delimitation
         }
-        
-        stream.seek(element.length);
-        
+
         return element;
     }
 

@@ -59,5 +59,5 @@ class ByteStream {
         this.position += 4;
 
         return result;        
-    }    
+    }
 }

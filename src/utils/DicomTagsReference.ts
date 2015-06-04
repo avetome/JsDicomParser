@@ -8,7 +8,12 @@ class DicomTagsReference {
         "x00020010": "TransferSyntaxUID",
         "x00020012": "ImplementationClassUID",
         "x00020013": "ImplementationVersionName",
-        "x00020016": "SourceApplicationEntityTitle"        
+        "x00020016": "SourceApplicationEntityTitle",        
+        "x00280008": "NumberOfFrames",
+        "xfffee000": "StartOfItem",
+        "xfffee00d": "EndOfItems",
+        "xfffee0dd": "EndOfSequence",
+        "x00082111": "DerivationDescription",
     };
 
     public static GetTagName(tagCode: string) {

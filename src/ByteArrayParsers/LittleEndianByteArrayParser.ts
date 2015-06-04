@@ -1,15 +1,17 @@
 /// <reference path="./../typing/browserify.d.ts" />
 /// <reference path="./IByteArrayParser.ts" />
 
-class LittleEndianByteArrayParser implements IByteArrayParser {
-
-    ReadFixedString(byteArray: Uint8Array, position: number, length: number):string {
+class LittleEndianByteArrayParser implements IByteArrayParser 
+{
+    ReadFixedString(byteArray: Uint8Array, position: number, length: number):string 
+    {
         if(length < 0)
         {
             throw 'LittleEndianByteArrayParser.ReadFixedString: length cannot be less than 0';
         }
 
-        if(position + length > byteArray.length) {
+        if(position + length > byteArray.length) 
+        {
             throw 'LittleEndianByteArrayParser.ReadFixedString: length cannot be more than buffer.length';
         }
 
@@ -19,7 +21,8 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
         {
             var byte = byteArray[position + i];
 
-            if(byte === 0) {
+            if(byte === 0) 
+            {
                 position +=  length;
                 return result;
             }
@@ -30,7 +33,8 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
         return result;
     }
 
-    readUint16(byteArray: Uint8Array, position: number):number {
+    readUint16(byteArray: Uint8Array, position: number):number 
+    {
         if (position < 0) {
             throw 'LittleEndianByteArrayParser.readUint16: position cannot be less than 0';
         }
@@ -41,7 +45,8 @@ class LittleEndianByteArrayParser implements IByteArrayParser {
         return byteArray[position] + (byteArray[position + 1] * 256);        
     }
 
-    readUint32(byteArray: Uint8Array, position: number):number {
+    readUint32(byteArray: Uint8Array, position: number):number 
+    {
         if (position < 0) {
             throw 'LittleEndianByteArrayParser.readUint16: position cannot be less than 0';
         }

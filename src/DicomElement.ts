@@ -14,5 +14,9 @@ class DicomElement {
     items: DicomElement[];
     DataSet: any;
 
+    isEncapsulatedPixelData: boolean;
+    basicOffsetTable: any;
+    fragments: any;
+
     constructor() {}
 }
