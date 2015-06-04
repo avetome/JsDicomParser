@@ -32,7 +32,7 @@
         var dicomParser = new JsDicomParser.Parser();
         var dicomDataSet = dicomParser.parse(byteArray);
 
-        var dicomImageExtractor = new DicomImaging.DicomImageExtractor();
+        var dicomImageExtractor = new JsDicomImaging.DicomImageExtractor();
 
         var dicomImage = dicomImageExtractor.getDicomImage(dicomDataSet);
         console.debug(dicomImage);
