@@ -5,6 +5,7 @@ module JsDicomParser {
             PixelData: "x7fe00010",
             TransferSyntaxUID: "x00020010",
             PhotometricInterpretation: "x00280004",
+            PixelSpacing: "x00280030",
             Rows: "x00280010",
             Columns: "x00280011",
             BitsAllocated: "x00280100",

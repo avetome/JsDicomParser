@@ -20,6 +20,7 @@ module JsDicomImaging
             image.rows = image.height = dicomDataSet.getElementAsUint16('x00280010');
             image.columns = image.width = dicomDataSet.getElementAsUint16('x00280011');
             image.pixelsCount = image.rows * image.columns;
+            image.pixelSpacing = this._getPixelSpacing(dicomDataSet);
             image.pixelData = this._extractStoredPixels(dicomDataSet, image.width, image.height);
 
             return image;
@@ -59,11 +60,20 @@ module JsDicomImaging
             else if(pixelRepresentation === 0 && bitsAllocated === 16) 
             {
                 return 2; // unsigned 16 bit
-            } 
+            }
             else if(pixelRepresentation === 1 && bitsAllocated === 16) 
             {
                 return 3; // signed 16 bit data
             }
+        }
+
+        private _getPixelSpacing(dataSet: any):number {
+            var pss = dataSet.getElementAsString('x00280030');
+            if (!pss || !pss.length) {
+                return 0;
+            }
+
+            return parseFloat(pss) || 0;
         }
 
         private  _isColorImage(photoMetricInterpretation)

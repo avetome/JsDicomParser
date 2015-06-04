@@ -8,5 +8,6 @@ module JsDicomImaging {
         height: number;
         pixelsCount: number;
         sizeInBytes: number;
+        pixelSpacing: number;
     }
 }
