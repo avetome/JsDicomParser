@@ -43,9 +43,9 @@ module JsDicomImaging
         {
             var pixelFormat = this._getPixelFormat(dataSet);
 
-            if(pixelFormat !== 2) // unsigned 16 bit
+            if(pixelFormat < 2) // unsigned 16 bit
             {
-                throw "DicomImageExtractor:_extractUncompressedPixels: only unsigned 16 bit images supports yet"
+                throw "DicomImageExtractor:_extractUncompressedPixels: only 16 bit images supports yet"
             }
 
             var pixelDataElement = dataSet.elements["x7fe00010"];
@@ -53,7 +53,14 @@ module JsDicomImaging
 
             var numPixels = width * height;
 
-            return new Uint16Array(dataSet.byteArray.buffer, pixelDataElement.offset, numPixels);
+            if (pixelFormat === 2)  // unsigned int
+            {
+                return new Uint16Array(dataSet.byteArray.buffer, pixelDataElement.offset, numPixels);    
+            }
+            else
+            {
+                return new Int16Array(dataSet.byteArray.buffer, pixelDataElement.offset, numPixels);
+            }            
         }
 
         private _getPixelFormat(dataSet: any)

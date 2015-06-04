@@ -10,6 +10,7 @@ module JsDicomParser {
             Columns: "x00280011",
             BitsAllocated: "x00280100",
             BitsStored: "x00280101",
+            PixelRepresentation: "x00280103",
             NumberOfFrames: "x00280008",
             StartOfItem: "xfffee000",
             EndOfItems: "xfffee00d",

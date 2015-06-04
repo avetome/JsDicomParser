@@ -30,7 +30,8 @@ module JsDicomParser {
             console.debug("PhotometricInterpretation: ", dataSet.getElementAsString(DicomConstants.Tags.PhotometricInterpretation));
             console.debug("PixelSpacing: ", dataSet.getElementAsString(DicomConstants.Tags.PixelSpacing));
             console.debug("Rows: ", dataSet.getElementAsUint16(DicomConstants.Tags.Rows));
-            console.debug("Columns: ", dataSet.getElementAsUint16(DicomConstants.Tags.Columns));
+            console.debug("Columns: ", dataSet.getElementAsUint16(DicomConstants.Tags.Columns));            
+            console.debug("PixelRepresentation: ", dataSet.getElementAsUint16(DicomConstants.Tags.PixelRepresentation));
             console.debug("BitsAllocated: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsAllocated));
             console.debug("BitsStored: ", dataSet.getElementAsUint16(DicomConstants.Tags.BitsStored));
             console.debug("NumberOfFrames: ", dataSet.getElementAsUint16(DicomConstants.Tags.NumberOfFrames));
