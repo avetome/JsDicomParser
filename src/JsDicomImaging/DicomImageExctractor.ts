@@ -1,3 +1,6 @@
+/// <reference path="./DicomImage/DicomImage.ts" />
+/// <reference path="./DicomImage/GrayscaleDicomImage.ts" />
+
 module JsDicomImaging {
     export class DicomImageExtractor {
         getDicomImage(dicomDataSet: any) {
