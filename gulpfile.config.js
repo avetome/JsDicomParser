@@ -5,7 +5,7 @@ var config = {
     },
     
     src: {
-        ts: './src/**/*.ts',        
+        ts: './src/**/*.ts',
     },
     
     watch: {

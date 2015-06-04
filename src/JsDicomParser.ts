@@ -1,4 +1,3 @@
-/// <reference path="./typing/browserify.d.ts" />
 /// <reference path="./ByteStream.ts" />
 /// <reference path="./ByteArrayParsers/IByteArrayParser.ts" />
 /// <reference path="./ByteArrayParsers/LittleEndianByteArrayParser.ts" />
@@ -37,7 +36,7 @@ module JsDicomParser {
             console.debug("DerivationDescription: ", dataSet.getElementAsString(DicomConstants.Tags.DerivationDescription));
             console.debug("PixelDataLength: ", dataSet.elements[DicomConstants.Tags.PixelData]);
         }
-        
+
         // read dicom header according to PS3.10 (http://medical.nema.org/dicom/2013/output/chtml/part10/PS3.10.html)
         // Spoiler: always in Explicit VR Little Endian
         private _readPart10Header(stream: ByteStream, dataSet: DicomDataSet) {
@@ -114,4 +113,16 @@ module JsDicomParser {
             return true;
         }
     }
+}
+
+declare var module: any;
+declare var define: any;
+
+// see http://garrettn.github.io/blog/2014/02/19/write-modular-javascript-that-works-anywhere-with-umd/
+if (typeof module === "object" && module.exports) {
+    // CommonJS (Node)
+    module.exports = JsDicomParser;
+} else if (typeof define === "function" && define.amd) {
+    // AMD
+    define(function () { return JsDicomParser; });
 }

@@ -1,4 +1,3 @@
-/// <reference path="./typing/browserify.d.ts" />
 /// <reference path="./ByteArrayParsers/IByteArrayParser.ts" />
 module JsDicomParser {
     export class ByteStream {

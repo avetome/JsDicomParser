@@ -1,4 +1,3 @@
-/// <reference path="./../typing/browserify.d.ts" />
 /// <reference path="./../DicomElement.ts" />
 /// <reference path="./../DicomTag.ts" />
 /// <reference path="./../TagReader.ts" />
