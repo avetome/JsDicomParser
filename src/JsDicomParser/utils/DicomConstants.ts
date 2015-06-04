@@ -2,6 +2,7 @@ module JsDicomParser {
     export class DicomConstants {
 
         public static Tags: any = {
+            Modality: "x00080060",
             PixelData: "x7fe00010",
             TransferSyntaxUID: "x00020010",
             PhotometricInterpretation: "x00280004",

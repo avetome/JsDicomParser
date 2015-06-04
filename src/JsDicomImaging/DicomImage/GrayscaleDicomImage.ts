@@ -2,6 +2,6 @@
 
 module JsDicomImaging {
     export class GrayscaleDicomImage extends DicomImage {
-        pixelData: number[];
+        pixelData: any;
     }
 }

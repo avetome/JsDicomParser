@@ -17,6 +17,7 @@ module JsDicomImaging
 
             var image = new GrayscaleDicomImage();
             image.uid = dicomDataSet.getElementAsString('x00080018');
+            image.modality = dicomDataSet.getElementAsString('x00080060');
             image.photometricInterpretation = photometricInterpretation;
             image.rows = image.height = dicomDataSet.getElementAsUint16('x00280010');
             image.columns = image.width = dicomDataSet.getElementAsUint16('x00280011');

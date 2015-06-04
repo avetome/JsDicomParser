@@ -26,6 +26,7 @@ module JsDicomParser {
             this._readDataSet(littleEndianStream, dataSet);
     
             console.debug("", dataSet.elements);
+            console.debug("Modality: ", dataSet.getElementAsString(DicomConstants.Tags.Modality));
             console.debug("TransferSyntaxes: ", dataSet.getElementAsString(DicomConstants.Tags.TransferSyntaxUID));
             console.debug("PhotometricInterpretation: ", dataSet.getElementAsString(DicomConstants.Tags.PhotometricInterpretation));
             console.debug("PixelSpacing: ", dataSet.getElementAsString(DicomConstants.Tags.PixelSpacing));
